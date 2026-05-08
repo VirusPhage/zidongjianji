@@ -3,7 +3,7 @@ import os
 import whisper
 import re
 from pydub import AudioSegment
-from werkzeug.utils import secure_filename # 用于安全地处理文件名
+from werkzeug.utils import secure_filename 
 import webbrowser
 import threading
 import time
@@ -103,7 +103,6 @@ def process_audio_and_text(audio_path, filename, mode):
         clip = audio[start_ms:end_ms]
         final_audio += clip
 
-    # 5. 【核心改动】根据模式决定输出路径
     output_filename = ""
     if mode == 'overwrite':
         # 覆盖原文件
