@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 视频自动剪辑系统</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- 引入图标库 (可选) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -55,7 +54,6 @@
                         </button>
                     </div>
                     <div id="transcriptList" class="transcript-list">
-                        <!-- 识别后的文字将在这里通过 JS 生成 -->
                         <div class="empty-tip">请上传音频后点击“开始识别”</div>
                     </div>
                 </div>
@@ -67,12 +65,11 @@
             <!-- 中上：视频预览 -->
             <div class="panel preview-panel">
     <div class="video-wrapper">
-        <!-- 修改：使用 Video 标签代替占位符 -->
         <video id="previewPlayer" controls style="width:100%; height:auto; background:black;">
             您的浏览器不支持 Video 标签。
         </video>
         
-        <!-- 进度条（如果需要自定义） -->
+        <!-- 进度条 -->
         <div class="video-controls">
             <div class="progress-bar"><div class="progress"></div></div>
         </div>
@@ -91,7 +88,7 @@
         </div>
     </div>
 
-    <!-- 时间刻度尺 (JS生成) -->
+    <!-- 时间刻度尺-->
     <div class="time-ruler" id="timeRuler">
         <!-- JS 将在这里生成时间刻度 -->
     </div>
