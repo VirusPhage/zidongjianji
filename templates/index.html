@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 视频自动剪辑系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- 引入图标库 (可选) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="sidebar-header">
+            <h3>素材库</h3>
+            <!-- 添加这个按钮 -->
+            <button onclick="clearAllMaterials()" style="font-size:10px; padding: 2px 5px;">清空所有</button>
+        </div>
+        <!-- 左侧栏 -->
+        <div class="sidebar left-sidebar">
+            <!-- 左上：素材列表 -->
+            <div class="panel asset-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-folder-open"></i> 素材库</h3>
+                    <!-- 1. 添加隐藏的文件输入框 -->
+                    <input type="file" id="fileInput" accept="audio/*,video/*" style="display: none;" />
+                    <!-- 2. 修改按钮，使其点击时触发文件输入框 -->
+                    <button id="btn-upload" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-upload"></i> 上传
+                    </button>
+                </div>
+                <div class="panel-body" id="asset-list">
+                    <!-- 3. 素材列表将在这里动态填充 -->
+                    <ul id="materialList">
+                        <div class="empty-tip">请上传音频或视频文件</div>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 左下：音频识别文字 -->
+            <div class="panel transcript-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-align-left"></i> 语音识别文本</h3>
+                </div>
+                <div class="panel-body" id="transcript-content">
+                    <p>等待音频加载与识别...</p>
+                </div>
+                <!-- 语音识别文本区域 -->
+                <div class="transcript-container">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-align-left"></i> 语音识别文本</h3>
+                        <!-- 新增：识别按钮 -->
+                        <button id="btn-recognize" onclick="startRecognition()">
+                            <i class="fas fa-magic"></i> 开始识别
+                        </button>
+                    </div>
+                    <div id="transcriptList" class="transcript-list">
+                        <!-- 识别后的文字将在这里通过 JS 生成 -->
+                        <div class="empty-tip">请上传音频后点击“开始识别”</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间栏 -->
+        <div class="main-content">
+            <!-- 中上：视频预览 -->
+            <div class="panel preview-panel">
+    <div class="video-wrapper">
+        <!-- 修改：使用 Video 标签代替占位符 -->
+        <video id="previewPlayer" controls style="width:100%; height:auto; background:black;">
+            您的浏览器不支持 Video 标签。
+        </video>
+        
+        <!-- 进度条（如果需要自定义） -->
+        <div class="video-controls">
+            <div class="progress-bar"><div class="progress"></div></div>
+        </div>
+    </div>
+            </div>
+
+            <!-- 剪辑轨道区域 -->
+        <div class="timeline-container">
+    <div class="timeline-header">
+        <h3><i class="fas fa-cut"></i> 剪辑轨道</h3>
+        <!-- 缩放控制 -->
+        <div class="zoom-control">
+            <button onclick="zoomOut()">-</button>
+            <span id="zoomLevel">100%</span>
+            <button onclick="zoomIn()">+</button>
+        </div>
+    </div>
+
+    <!-- 时间刻度尺 (JS生成) -->
+    <div class="time-ruler" id="timeRuler">
+        <!-- JS 将在这里生成时间刻度 -->
+    </div>
+
+    <!-- 轨道内容滚动区域 -->
+    <div class="tracks-area" id="tracksArea">
+        <!-- 视频轨道 -->
+        <div class="track-layer video-track">
+            <div class="track-label">视频轨</div>
+            <div class="track-content" id="videoTrackContent">
+                <!-- 视频片段将通过 JS 渲染在这里 -->
+            </div>
+        </div>
+
+        <!-- 音频轨道 -->
+        <div class="track-layer audio-track">
+            <div class="track-label">音频轨</div>
+            <div class="track-content" id="audioTrackContent">
+                <!-- 音频片段将通过 JS 渲染在这里 -->
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+        <!-- 右侧栏 -->
+        <div class="sidebar right-sidebar">
+            <!-- 右上：微调栏 -->
+            <div class="panel settings-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-sliders-h"></i> 参数微调</h3>
+                </div>
+                <div class="panel-body">
+                    <label>剪辑灵敏度:</label>
+                    <input type="range" min="1" max="100" value="50">
+                    <br><br>
+                    <label>保留静音片段:</label>
+                    <input type="checkbox">
+                </div>
+            </div>
+
+            <!-- 右下：用户输入 -->
+            <div class="panel prompt-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-robot"></i> AI 指令</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea placeholder="输入指令，例如：'把视频中所有停顿超过2秒的地方剪掉'"></textarea>
+                    <button class="btn-run-ai">生成剪辑</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
