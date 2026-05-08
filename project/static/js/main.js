@@ -5,7 +5,7 @@ let assets = []; // 素材库数据
 let timeline = []; // 轨道数据 [{id, type, src, start, duration, content}]
 let nextId = 1; // 用于生成唯一ID
 let zoomLevel = 100; // 缩放比例 (px/s)
-const PIXELS_PER_SECOND = 100; // 基础缩放单位 (加大了基础值，体验更好)
+const PIXELS_PER_SECOND = 100; // 基础缩放单位
 let isDraggingScrollbar = false; // 防止拖拽时触发滚轮
 
 // ================= 初始化 =================
@@ -26,7 +26,7 @@ function initEventListeners() {
         if (e.target === e.currentTarget) clearSelection();
     });
 
-    // =============== 滚轮缩放逻辑 (剪映核心体验) ===============
+    // =============== 滚轮缩放逻辑 ===============
     tracksArea.addEventListener('wheel', handleZoomWheel, { passive: false });
 
     // 拖拽时防止缩放
@@ -89,11 +89,11 @@ function handleFileUpload(e) {
             progress: 0
         };
 
-        // 2. 立即添加到列表，显示“加载中”状态
+        // 2. 立即添加到列表
         assets.push(asset);
         addAssetToDOM(asset);
 
-        // 3. 异步读取文件 (修复视频无法读取时长的问题)
+        // 3. 异步读取文件 
         const reader = new FileReader();
         
         reader.onprogress = (event) => {
@@ -200,14 +200,14 @@ function addAssetToDOM(asset) {
     list.appendChild(li);
 }
 
-// ================= 轨道逻辑 (剪映风格) =================
+// ================= 轨道逻辑 =================
 function renderTimeRuler() {
     const ruler = document.getElementById('timeRuler');
     ruler.innerHTML = '';
     const totalSeconds = 3600; // 假设最大1小时
     const scale = PIXELS_PER_SECOND * zoomLevel / 100;
 
-    // 计算刻度间隔 (根据缩放级别动态调整)
+    // 计算刻度间隔
     let step = 1; // 默认1秒
     if (zoomLevel < 20) step = 60; // 1分钟
     else if (zoomLevel < 50) step = 10; // 10秒
@@ -379,7 +379,7 @@ function playClip(clip) {
     }
 }
 
-// ================= 语音识别 (保持不变) =================
+// ================= 语音识别=================
 function startRecognition() {
     if (!('webkitSpeechRecognition' in window)) {
         alert("您的浏览器不支持语音识别，请使用 Chrome 浏览器。");
@@ -406,7 +406,7 @@ function startRecognition() {
     };
 }
 
-// ================= AI 指令 (保持不变) =================
+// ================= AI 指令 =================
 async function runAICommand() {
     const textarea = document.querySelector('.prompt-panel textarea');
     const prompt = textarea.value.trim();
